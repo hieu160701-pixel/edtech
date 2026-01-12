@@ -9,24 +9,27 @@ st.title("🎓 AI Coach - Tìm lộ trình học chuẩn xác")
 st.write("Chào bạn, tôi sẽ giúp bạn tìm khóa học phù hợp nhất thay vì tìm kiếm mệt mỏi trên Google.")
 
 # 2. KẾT NỐI API & DỮ LIỆU
-# Lấy API Key bí mật từ cấu hình của Streamlit
+# Lấy API Key bí mật từ cấu hình của Streamlit hoặc dùng key mặc định (fallback)
 try:
+    # Key mặc định từ người dùng cung cấp (để chạy ngay nếu chưa cấu hình secrets)
+    default_api_key = "AIzaSyDLSRnw-QZGXQ-0spEUcbZTJ2_4-rWcDUY"
+    
     if "GEMINI_API_KEY" in st.secrets:
         genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
     else:
-        st.error("Chưa nhập API Key vào Secrets.")
-        st.stop()
+        # Sử dụng key trực tiếp nếu không có secrets
+        genai.configure(api_key=default_api_key)
     
     # --- PHẦN BẠN CẦN SỬA LINK CSV ---
     # Thay đường link bên dưới bằng link CSV bạn lấy ở BƯỚC 1
-    # VÍ DỤ: csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pub?output=csv"
-    csv_url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTq9...THAY_LINK_CUA_BAN_VAO_DAY.../pub?output=csv"
+    # Lưu ý: Link này chỉ hoạt động nếu bạn đã "Publish to Web" (Công bố lên web)
+    csv_url = "https://docs.google.com/spreadsheets/d/1Ql3qgm_zU3X8mSUfabL0J1vg4Ctu6OUzz4Q0Z-R8_Jc/pub?output=csv"
     
     # Đọc dữ liệu
     df = pd.read_csv(csv_url)
     
 except Exception as e:
-    st.error(f"Lỗi kết nối: {e}. Hãy kiểm tra lại link CSV hoặc API Key.")
+    st.error(f"Lỗi kết nối: {e}. \\n\\n**Lưu ý quan trọng:**\\n1. Kiểm tra xem bạn đã 'Publish to Web' file Google Sheet chưa?\\n2. Kiểm tra API Key có đúng không?")
     st.stop()
 
 # 3. GIAO DIỆN CHAT
