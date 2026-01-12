@@ -75,31 +75,35 @@ if prompt := st.chat_input("Nhập mục tiêu học tập của bạn..."):
                 """
                 
                 # Danh sách các model để thử (dự phòng khi model này lỗi thì qua model khác)
+                # Danh sách các model để thử (Chỉ dùng các key đã kiểm tra là có sẵn)
                 models_to_try = [
-                    'gemini-2.0-flash-lite-preview-02-05', # Thử bản lite mới nhất trước
-                    'gemini-2.0-flash-lite',
-                    'gemini-2.0-flash',
-                    'gemini-1.5-flash',
-                    'gemini-pro'
+                    'gemini-2.0-flash',             # Bản ổn định
+                    'gemini-2.0-flash-lite',        # Bản nhẹ
+                    'gemini-2.0-flash-exp',         # Bản thử nghiệm (thường ít bị limit)
+                    'gemini-flash-latest',          # Alias trỏ về bản flash mới nhất (thường là 1.5)
                 ]
                 
                 response = None
-                last_error = None
+                error_log = []
                 
                 for model_name in models_to_try:
                     try:
+                        # Thêm delay nhỏ để tránh spam request quá nhanh lỗi 429 liên hoàn
+                        import time
+                        time.sleep(1) 
                         model = genai.GenerativeModel(model_name)
                         response = model.generate_content(full_prompt)
-                        break # Nếu thành công thì thoát vòng lặp
+                        break
                     except Exception as e:
-                        last_error = e
-                        continue # Nếu lỗi thì thử model tiếp theo
+                        error_log.append(f"{model_name}: {str(e)}")
+                        continue
                 
                 if response:
                     st.markdown(response.text)
                     st.session_state.messages.append({"role": "model", "content": response.text})
                 else:
-                    st.error(f"Xin lỗi, hiện tại hệ thống đang quá tải (Lỗi: {last_error}). Vui lòng thử lại sau vài giây.")
+                    error_details = "\\n".join(error_log)
+                    st.error(f"Hệ thống đang rất bận. Đã thử tất cả các models nhưng đều thất bại:\\n{error_details}\\n\\nVui lòng đợi 1 phút và thử lại.")
                 
             except Exception as e:
                 st.error(f"Đã có lỗi xảy ra: {e}")
