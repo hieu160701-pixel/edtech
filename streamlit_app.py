@@ -22,8 +22,8 @@ try:
     
     # --- PHẦN BẠN CẦN SỬA LINK CSV ---
     # Thay đường link bên dưới bằng link CSV bạn lấy ở BƯỚC 1
-    # Lưu ý: Link này chỉ hoạt động nếu bạn đã "Publish to Web" (Công bố lên web)
-    csv_url = "https://docs.google.com/spreadsheets/d/1Ql3qgm_zU3X8mSUfabL0J1vg4Ctu6OUzz4Q0Z-R8_Jc/pub?output=csv"
+    # Link này dùng được cho cả "Publish to Web" và "Share with anyone link"
+    csv_url = "https://docs.google.com/spreadsheets/d/1Ql3qgm_zU3X8mSUfabL0J1vg4Ctu6OUzz4Q0Z-R8_Jc/export?format=csv"
     
     # Đọc dữ liệu
     df = pd.read_csv(csv_url)
