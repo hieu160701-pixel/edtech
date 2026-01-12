@@ -9,16 +9,13 @@ st.title("🎓 AI Coach - Tìm lộ trình học chuẩn xác")
 st.write("Chào bạn, tôi sẽ giúp bạn tìm khóa học phù hợp nhất thay vì tìm kiếm mệt mỏi trên Google.")
 
 # 2. KẾT NỐI API & DỮ LIỆU
-# Lấy API Key bí mật từ cấu hình của Streamlit hoặc dùng key mặc định (fallback)
+# Lấy API Key bí mật từ cấu hình của Streamlit
 try:
-    # Key mặc định từ người dùng cung cấp (để chạy ngay nếu chưa cấu hình secrets)
-    default_api_key = "AIzaSyDLSRnw-QZGXQ-0spEUcbZTJ2_4-rWcDUY"
-    
     if "GEMINI_API_KEY" in st.secrets:
         genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
     else:
-        # Sử dụng key trực tiếp nếu không có secrets
-        genai.configure(api_key=default_api_key)
+        st.error("Chưa cấu hình API Key trong Secrets. Vui lòng vào Cài đặt (Advanced Settings) trên Streamlit Cloud và thêm `GEMINI_API_KEY`.")
+        st.stop()
     
     # --- PHẦN BẠN CẦN SỬA LINK CSV ---
     # Thay đường link bên dưới bằng link CSV bạn lấy ở BƯỚC 1
