@@ -74,11 +74,32 @@ if prompt := st.chat_input("Nhập mục tiêu học tập của bạn..."):
                 5. Giọng văn thân thiện, khuyến khích.
                 """
                 
-                model = genai.GenerativeModel('gemini-2.0-flash')
-                response = model.generate_content(full_prompt)
+                # Danh sách các model để thử (dự phòng khi model này lỗi thì qua model khác)
+                models_to_try = [
+                    'gemini-2.0-flash-lite-preview-02-05', # Thử bản lite mới nhất trước
+                    'gemini-2.0-flash-lite',
+                    'gemini-2.0-flash',
+                    'gemini-1.5-flash',
+                    'gemini-pro'
+                ]
                 
-                st.markdown(response.text)
-                st.session_state.messages.append({"role": "model", "content": response.text})
+                response = None
+                last_error = None
+                
+                for model_name in models_to_try:
+                    try:
+                        model = genai.GenerativeModel(model_name)
+                        response = model.generate_content(full_prompt)
+                        break # Nếu thành công thì thoát vòng lặp
+                    except Exception as e:
+                        last_error = e
+                        continue # Nếu lỗi thì thử model tiếp theo
+                
+                if response:
+                    st.markdown(response.text)
+                    st.session_state.messages.append({"role": "model", "content": response.text})
+                else:
+                    st.error(f"Xin lỗi, hiện tại hệ thống đang quá tải (Lỗi: {last_error}). Vui lòng thử lại sau vài giây.")
                 
             except Exception as e:
                 st.error(f"Đã có lỗi xảy ra: {e}")
