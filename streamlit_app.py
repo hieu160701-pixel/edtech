@@ -149,7 +149,7 @@ try:
         st.error("Chưa cấu hình API Key trong Secrets. Vui lòng vào Cài đặt (Advanced Settings) trên Streamlit Cloud và thêm `GEMINI_API_KEY`.")
         st.stop()
     
-    csv_url = "https://docs.google.com/spreadsheets/d/1Ql3qgm_zU3X8mSUfabL0J1vg4Ctu6OUzz4Q0Z-R8_Jc/export?format=csv"
+    csv_url = "https://docs.google.com/spreadsheets/d/1GM4ueLMAb4A4VfzQc4Q8fnfCFLclMIjJUvFnqi__kac/export?format=csv"
     df = pd.read_csv(csv_url)
     
     # Chuẩn bị dữ liệu với ranking
