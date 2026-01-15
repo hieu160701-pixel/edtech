@@ -1,0 +1,30 @@
+[
+  {
+    "timestamp": "2026-01-15T11:39:46.140744",
+    "user_query": "Toi muon hoc Excel de lam viec van phong hieu qua hon",
+    "ai_response_length": 2500,
+    "recommended_courses": [
+      "So Tay Bieu Mau Excel",
+      "Tap Trung Than Toc"
+    ],
+    "session_id": "test_20260115_113907"
+  },
+  {
+    "timestamp": "2026-01-15T11:40:07.061379",
+    "user_query": "1 ke toan 2 co ban 3 lap bao cao",
+    "ai_response_length": 4200,
+    "recommended_courses": [
+      "So Tay Bieu Mau Excel",
+      "Tap Trung Than Toc",
+      "Ky nang dam phan"
+    ],
+    "session_id": "test_20260115_113907"
+  },
+  {
+    "timestamp": "2026-01-15T11:40:07.061396",
+    "user_query": "cam on ban nhieu!",
+    "ai_response_length": 150,
+    "recommended_courses": [],
+    "session_id": "test_20260115_113907"
+  }
+]
