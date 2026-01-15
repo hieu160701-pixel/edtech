@@ -74,13 +74,17 @@ Rating          - Điểm đánh giá
 ### Tiêu Chí Xếp Hạng Ưu Tiên Khóa Học
 Khi có nhiều khóa học phù hợp, ưu tiên theo thứ tự:
 
-| Ưu Tiên | Tiêu Chí | Lý Do |
-|---------|----------|-------|
-| 1️⃣ | **Rating ≥ 4.5** | Chất lượng đã được kiểm chứng |
-| 2️⃣ | **Students ≥ 1000** | Độ phổ biến, cộng đồng lớn |
-| 3️⃣ | **Description phù hợp nhất** | Nội dung khớp với mục tiêu người học |
-| 4️⃣ | **Price hợp lý** | Giá trị xứng đáng với chi phí |
-| 5️⃣ | **Teacher uy tín** | Giảng viên có kinh nghiệm |
+| Ưu Tiên | Tiêu Chí | Trọng Số | Lý Do |
+|---------|----------|----------|-------|
+| 1️⃣ | **Students ≥ 1000** | 50% | Độ phổ biến, cộng đồng lớn, nhiều người đã học = đáng tin |
+| 2️⃣ | **Rating ≥ 4.0** (với ≥3 reviews) | 40% | Chất lượng được kiểm chứng bởi nhiều người |
+| 3️⃣ | **Price hợp lý** | 10% | Giá không quá cao so với giá trị |
+| 4️⃣ | **Description phù hợp** | Bonus | Nội dung khớp với mục tiêu người học |
+
+### ⚠️ KHÔNG RECOMMEND khóa học nếu:
+- Rating < 3.0 (chất lượng kém)
+- Students < 10 VÀ Reviews = 0 (chưa có ai học đáng kể)
+- Trừ khi KHÔNG CÓ khóa nào khác phù hợp → nói rõ hạn chế
 
 ---
 

@@ -32,23 +32,30 @@ def load_ai_config():
         """
 
 def prepare_course_data(df):
-    """Chuẩn bị dữ liệu khóa học với ranking"""
+    """Chuẩn bị dữ liệu khóa học với ranking - ưu tiên nhiều học viên và đánh giá cao"""
     # Tạo bản sao để không ảnh hưởng df gốc
     df_ranked = df.copy()
     
     # Tính điểm ưu tiên cho mỗi khóa học
-    # Dựa trên: Rating (cao nhất), Students (nhiều nhất), Price (hợp lý)
+    # ƯU TIÊN: Students (50%) > Rating (40%) > Price (10%)
     try:
         # Chuẩn hóa các cột số
         df_ranked['Rating'] = pd.to_numeric(df_ranked.get('Rating', 0), errors='coerce').fillna(0)
         df_ranked['Students'] = pd.to_numeric(df_ranked.get('Students', 0), errors='coerce').fillna(0)
         df_ranked['Price'] = pd.to_numeric(df_ranked.get('Price', 0), errors='coerce').fillna(0)
+        df_ranked['Reviews'] = pd.to_numeric(df_ranked.get('Reviews', 0), errors='coerce').fillna(0)
         
-        # Tính Priority Score
+        # Tính Priority Score - ưu tiên cao cho khóa nhiều học viên và đánh giá tốt
+        # Students: max 50 điểm (10000+ học viên = full điểm)
+        # Rating: max 40 điểm (5.0 = full điểm, nhưng cần ít nhất 3 reviews)
+        # Price: max 10 điểm (giá thấp hơn = điểm cao hơn)
         df_ranked['Priority_Score'] = (
-            df_ranked['Rating'] * 20 +
-            df_ranked['Students'].apply(lambda x: min(x / 100, 50)) +
-            df_ranked['Price'].apply(lambda x: max(0, 100 - x / 10000))
+            # Students score: 50% weight
+            df_ranked['Students'].apply(lambda x: min(x / 200, 50)) +
+            # Rating score: 40% weight (chỉ tính nếu có >= 3 reviews)
+            df_ranked.apply(lambda row: row['Rating'] * 8 if row['Reviews'] >= 3 else row['Rating'] * 4, axis=1) +
+            # Price score: 10% weight (giá thấp = điểm cao)
+            df_ranked['Price'].apply(lambda x: max(0, 10 - x / 100000))
         )
         
         # Sắp xếp theo Priority Score giảm dần
